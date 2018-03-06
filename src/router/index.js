@@ -37,7 +37,7 @@ let order = [
 export default new Router({
   routes: [
     // 账户管理路由配置
-    // 名称，     路径：绝对路径  组件：你引入的组件
+    // 名称：自定语义  路径：绝对路径  组件：你引入的组件
     {name:'login',path:'/login',component:Login},
     
     // 商品管理路由配置                   有很多分路由，children:[数组]
