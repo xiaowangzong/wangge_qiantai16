@@ -5,6 +5,7 @@
             <div class="location">
                 <span>当前位置：</span>
                 <router-link to="">首页</router-link>
+                <router-link to="">购物商城</router-link>
             </div>
         </div>
 
@@ -17,14 +18,16 @@
                         <div class="banner-nav">
                             <ul>
                                 <!--此处声明下面可重复循环-->
-
-                                <li>
+                                <!-- 遍历 top.catelist里面的item内容-->
+                                <li v-for="item in top.catelist" :key="item.id">
                                     <h3>
                                         <i class="iconfont icon-arrow-right"></i>
-                                        <span>手机数码</span>
+                                        <span>{{item.title}}</span>
                                         <p>
 
-                                            手机通讯 摄影摄像 存储设备
+                                            <span v-for="subitem in item.subcates" :key="subitem.id">
+                                                {{subitem.title}}&nbsp;
+                                            </span>
 
                                         </p>
                                     </h3>
@@ -32,74 +35,12 @@
                                         <!--如有三级分类，此处可循环-->
                                         <dl>
                                             <dt>
-                                                <a href="/goods/40.html">手机数码</a>
+                                                <a href="/goods/40.html">{{item.title}}</a>
                                             </dt>
                                             <dd>
-
-                                                <a href="/goods/43.html">手机通讯</a>
-
-                                                <a href="/goods/44.html">摄影摄像</a>
-
-                                                <a href="/goods/45.html">存储设备</a>
-
-                                            </dd>
-                                        </dl>
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <h3>
-                                        <i class="iconfont icon-arrow-right"></i>
-                                        <span>电脑办公</span>
-                                        <p>
-
-                                            电脑整机 外设产品 办公打印
-
-                                        </p>
-                                    </h3>
-                                    <div class="item-box">
-                                        <!--如有三级分类，此处可循环-->
-                                        <dl>
-                                            <dt>
-                                                <a href="/goods/41.html">电脑办公</a>
-                                            </dt>
-                                            <dd>
-
-                                                <a href="/goods/46.html">电脑整机</a>
-
-                                                <a href="/goods/47.html">外设产品</a>
-
-                                                <a href="/goods/48.html">办公打印</a>
-
-                                            </dd>
-                                        </dl>
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <h3>
-                                        <i class="iconfont icon-arrow-right"></i>
-                                        <span>影音娱乐</span>
-                                        <p>
-
-                                            平板电视 音响DVD 影音配件
-
-                                        </p>
-                                    </h3>
-                                    <div class="item-box">
-                                        <!--如有三级分类，此处可循环-->
-                                        <dl>
-                                            <dt>
-                                                <a href="/goods/42.html">影音娱乐</a>
-                                            </dt>
-                                            <dd>
-
-                                                <a href="/goods/49.html">平板电视</a>
-
-                                                <a href="/goods/50.html">音响DVD</a>
-
-                                                <a href="/goods/51.html">影音配件</a>
-
+                                                <router-link to="" v-for="subitem in item.subcates" :key="subitem.id">
+                                                    {{subitem.title}}&nbsp;
+                                                </router-link>
                                             </dd>
                                         </dl>
                                     </div>
@@ -113,45 +54,59 @@
                     <!--幻灯片-->
                     <div class="left-705">
                         <div class="banner-img">
-                            <div id="focus-box" class="focus-box">
-                                <ul class="slides">
-                                    <li class="" style="width: 100%; float: left; margin-right: -100%; position: relative; opacity: 0; display: block; z-index: 1;">
-                                        <a href="/goods.html">
-                                            <img src="/templates/main/images/focus_1.png" draggable="false">
-                                        </a>
-                                    </li>
-                                    <li style="width: 100%; float: left; margin-right: -100%; position: relative; opacity: 1; display: block; z-index: 2;" class="flex-active-slide">
-                                        <a href="/goods.html">
-                                            <img src="/templates/main/images/focus_2.png" draggable="false">
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ol class="flex-control-nav flex-control-paging">
-                                    <li>
-                                        <a class="">1</a>
-                                    </li>
-                                    <li>
-                                        <a class="flex-active">2</a>
-                                    </li>
-                                </ol>
-                            </div>
-
+                            <el-carousel style="height:100%">
+                                <el-carousel-item v-for="item in top.sliderlist" :key="item.id">
+                                    <img :src="item.img_url" :alt="item.title">
+                                </el-carousel-item>
+                            </el-carousel>
                         </div>
                     </div>
                     <!--/幻灯片-->
 
+                    <!-- 侧边栏=>推荐商品，抽取为公共组件=>共享-->
+                    <app-aside :list="top.toplist"></app-aside>
                 </div>
             </div>
         </div>
-
-        <!-- 侧边栏=>推荐商品，抽取为公共组件--共享-->
 
         <!-- 页面主体=>商品预览，抽取为子组件 -->
     </div>
 </template>
 
 <script>
-export default {};
+    import AppAside from './subcom/CommonAside.vue'; 
+
+    export default {
+        components:{    //注册
+            AppAside
+        },
+
+        //data里面先预定义数据
+        data() {
+            return {
+            top: {
+                catelist: [],
+                sliderlist: [],
+                toplist: []
+            }
+            };
+        },
+        methods: {
+            //获取页面顶部数据--get请求  (单纯的获取数据用get,有获取和发送用post)
+            getTop() {
+            this.$http.get(this.$api.goodsTop).then(res => {
+                if (res.data.status == 0) {
+                this.top = res.data.message;
+                }
+                //如果没有数据，就获取message里面的数据
+            });
+            }
+        },
+        //这里有钩子函数的生命周期问题
+        created() {
+            this.getTop();
+        }
+    };
 </script>
 
 <style scoped>

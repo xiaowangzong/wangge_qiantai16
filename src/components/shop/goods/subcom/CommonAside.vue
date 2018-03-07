@@ -1,51 +1,19 @@
 <template>
     <div>
-        <!-- 侧边栏=>推荐商品，抽取为公共组件--共享--> 
+        <!-- 侧边栏=>推荐商品，抽取为公共组件=>共享--> 
         <!--推荐商品-->
                     <div class="left-220">
                         <ul class="side-img-list">
 
-                            <li>
+                            <li v-for="(item,i) in list" :key="item.id">
                                 <div class="img-box">
-                                    <label>1</label>
-                                    <img src="/upload/201504/20/thumb_201504200314272543.jpg">
+                                    <label>{{i+1}}</label>      <!-- 同时获取图片的索引i,i+1是序号 -->
+                                    <img :src="item.img_url">   <!-- 这里没有双尖括号，前面加冒号 -->
                                 </div>
                                 <div class="txt-box">
-                                    <a href="/goods/show-98.html">奔腾（BNTN） 380功放+纽约至尊 套装家庭影院</a>
-                                    <span>2015-04-20</span>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="img-box">
-                                    <label>2</label>
-                                    <img src="/upload/201504/20/thumb_201504200258403759.jpg">
-                                </div>
-                                <div class="txt-box">
-                                    <a href="/goods/show-97.html">三星（SAMSUNG）UA40HU5920JXXZ 40英寸4K超高清</a>
-                                    <span>2015-04-20</span>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="img-box">
-                                    <label>3</label>
-                                    <img src="/upload/201504/20/thumb_201504200242250674.jpg">
-                                </div>
-                                <div class="txt-box">
-                                    <a href="/goods/show-95.html">惠普（HP）LaserJet 2035商用黑白激光打印机（黑色）</a>
-                                    <span>2015-04-20</span>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="img-box">
-                                    <label>4</label>
-                                    <img src="/upload/201504/20/thumb_201504200239192345.jpg">
-                                </div>
-                                <div class="txt-box">
-                                    <a href="/goods/show-94.html">金士顿（Kingston） DataTraveler SE9 32GB 金属U盘</a>
-                                    <span>2015-04-20</span>
+                                    <a href="/goods/show-98.html">{{item.title}}</a>
+                                    <span>{{item.add_time | date}}</span>
+                                    <!-- 这就相当于把具体的东西写活 -->
                                 </div>
                             </li>
 
@@ -57,6 +25,17 @@
 
 <script>
     export default {
+        //接受父传过来的list 数据
+        props:['list'],
+
+        //局部过滤器
+        filters:{
+            //日期过滤器
+            date(tplDate){
+                let date=new Date(tplDate);
+                return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+            }
+        }
         
     }
 </script>
