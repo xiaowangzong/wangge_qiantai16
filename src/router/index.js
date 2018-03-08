@@ -19,18 +19,18 @@ Vue.use(Router)
 // 分支路由，let
 //let goods=[数组{},{},{}...];
 let goods=[                                //id可以对应具体的商品
-  { name: 'GoodsDetail', path: 'goods/detail/:id', component: GoodsDetail},
-  { name: 'GoodsList', path: 'goods/list', component: GoodsList},
+  { name: 'goodsDetail', path: 'goods/detail/:id', component: GoodsDetail},
+  { name: 'goodsList', path: 'goods/list', component: GoodsList},
 ];
 
 let shopcart=[
-  { name: 'Shopcart', path: 'shopcart', component: Shopcart },
+  { name: 'shopcart', path: 'shopcart', component: Shopcart },
 ];
 
 let order = [
-  { name: 'OrderComplete', path: 'order/complete', component: OrderComplete },
+  { name: 'orderComplete', path: 'order/complete', component: OrderComplete },
   { name: 'orderPay', path: 'order/pay/:id', component: OrderPay},      //对应的要付款的商品
-  { name: 'OrderSite', path: 'order/site/:ids', component: OrderSite}   //哪些商品填写地址
+  { name: 'orderSite', path: 'order/site/:ids', component: OrderSite}   //哪些商品填写地址
 ];
 
 
