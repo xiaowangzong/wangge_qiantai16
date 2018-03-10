@@ -1,15 +1,17 @@
 <template>
     <div>
-        <!-- 公共评论 -->     <!-- 需要一个根，不然报错 -->
-      <div class="comment-box">
+        <!-- 公共评论 -->
+        <!-- 需要一个根，不然报错 -->
+        <div class="comment-box">
             <!--取得评论总数-->
-            <form id="commentForm" name="commentForm" class="form-box" url="/tools/submit_ajax.ashx?action=comment_add&amp;channel_id=2&amp;article_id=98">
+            <form id="commentForm" name="commentForm" class="form-box" @submit.prevent="sendComments">
                 <div class="avatar-box">
                     <i class="iconfont icon-user-full"></i>
                 </div>
                 <div class="conn-box">
                     <div class="editor">
-                        <textarea id="txtContent" name="txtContent" sucmsg=" " datatype="*10-1000" nullmsg="请填写评论内容！"></textarea>
+                        <!--v-model="" 前后双向数据绑定， 请求报文体传参示例：commenttxt (具体看文档) -->
+                        <textarea id="txtContent" v-model="commenttxt.commenttxt" name="txtContent" sucmsg=" " datatype="*10-1000" nullmsg="请填写评论内容！"></textarea>
                         <span class="Validform_checktip"></span>
                     </div>
                     <div class="subcon">
@@ -19,50 +21,81 @@
                 </div>
             </form>
             <ul id="commentList" class="list-box">
-                <p style="margin:5px 0 15px 69px;line-height:42px;text-align:center;border:1px solid #f7f7f7;">暂无评论，快来抢沙发吧！</p>
-                <li>
+                <!-- 如果评论长度为0，出来 -->
+                <p v-if="comments.length == 0" style="margin:5px 0 15px 69px;line-height:42px;text-align:center;border:1px solid #f7f7f7;">暂无评论，快来抢沙发吧！</p>
+                <!-- 根据(唯一对应性)索引来遍历的，后台时间有bug,不可传 。且key里面必须是字符串-->
+                <li v-for="(item, i) in comments" :key="i">
                     <div class="avatar-box">
                         <i class="iconfont icon-user-full"></i>
                     </div>
                     <div class="inner-box">
                         <div class="info">
-                            <span>匿名用户</span>
-                            <span>2017/10/23 14:58:59</span>
+                            <span>{{item.user_name}}</span>
+                            <span>{{item.add_time}}</span>
                         </div>
-                        <p>testtesttest</p>
+                        <p>{{item.content}}</p>
                     </div>
                 </li>
-                <li>
-                    <div class="avatar-box">
-                        <i class="iconfont icon-user-full"></i>
-                    </div>
-                    <div class="inner-box">
-                        <div class="info">
-                            <span>匿名用户</span>
-                            <span>2017/10/23 14:59:36</span>
-                        </div>
-                        <p>很清晰调动单很清晰调动单</p>
-                    </div>
-                </li>
+
             </ul>
             <!--放置页码-->
-            <div class="page-box" style="margin:5px 0 0 62px">
-                <div id="pagination" class="digg">
-                    <span class="disabled">« 上一页</span>
-                    <span class="current">1</span>
-                    <span class="disabled">下一页 »</span>
-                </div>
-            </div>
+            
             <!--/放置页码-->
-        </div>    
+        </div>
 
     </div>
 </template>
 
 <script>
-    export default {
-        
+export default {
+  props: ['id'], //接收Detail.vue返回的id
+
+  data() {
+    return {
+      comments: [],
+      commenttxt: {
+        commenttxt: ""
+      }
     }
+  },
+
+  methods: {
+    //获取评论列表
+    getComments() {
+      let url = `${this.$api.commentList}goods/${
+        this.id
+      }?pageIndex=1&pageSize=10`;
+      this.$http.get(url).then(res => {
+        if (res.data.status == 0) {
+          this.comments = res.data.message;
+        }
+      });
+    },
+
+    //发表评论--好像要重启一下api服务
+    sendComments() {
+      let url = `${this.$api.comment}goods/${this.id}`;
+      this.$http.post(url,this.commenttxt).then(res => {
+        if (res.data.status == 0) {
+          this.commenttxt.commenttxt = ''; // 成功后清空评论框
+          this.getComments();
+          //如果成功，调用它，刷新页面
+        }
+      });
+    }
+  },
+
+  created() {
+    this.getComments();
+  },
+
+  watch: {
+    //监听，用户访问新的商品时，重新调用商品的品论列表
+    id() {
+      this.getComments();
+    }
+  }
+};
 </script>
 
 <style scoped>

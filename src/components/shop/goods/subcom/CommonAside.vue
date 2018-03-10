@@ -1,8 +1,9 @@
 <template>
     <div>
-        <!-- 侧边栏      =>推荐商品=>共享--> 
+        
         <!--推荐商品-->
                 <div class="left-220">
+                    <!-- 侧边栏      =>推荐商品=>共享--> 
                      <div class="bg-wrap nobg">
                        <div class="sidebar-box">    
 
@@ -16,7 +17,7 @@
                                     <img :src="item.img_url">   <!-- 图片这里没有双尖括号，前面加冒号 -->
                                 </div>
                                 <div class="txt-box">
-                                    <router-link :to="{name:goodsDetail,params:{id:item.id}}">{{item.title}}</router-link>
+                                    <router-link :to="{name:'goodsDetail',params:{id:item.id}}">{{item.title}}</router-link>
                                     <!-- 点击标题，切换到商品详情页面，根据这个商品对应的ID -->
                                     <!-- <a href="/goods/show-98.html">{{item.title}}</a> -->
                                     <span>{{item.add_time | date}}</span>
@@ -34,6 +35,7 @@
 </template>
 
 <script>
+
     export default {
         //接受父传过来的list 数据
         props:['list'],

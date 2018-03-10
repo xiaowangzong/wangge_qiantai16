@@ -1,6 +1,6 @@
 <template>
     <div>
-        <!-- 页面主体=>商品预览，抽取为子组件 -->
+        <!-- 页面主体        =>商品预览，抽取为子组件 -->
         <div class="section" v-for="item in goodsGroup" :key="item.level1cateid">
 
             <!--子类-->
