@@ -19,7 +19,7 @@
                                 <div class="txt-box">
                                     <router-link :to="{name:'goodsDetail',params:{id:item.id}}">{{item.title}}</router-link>
                                     <!-- 点击标题，切换到商品详情页面，根据这个商品对应的ID -->
-                                    <!-- <a href="/goods/show-98.html">{{item.title}}</a> -->
+                                    <a href="/goods/show-98.html">{{item.title}}</a>
                                     <span>{{item.add_time | date}}</span>
                                     <!-- 这就相当于把具体的东西写活 -->
                                 </div>

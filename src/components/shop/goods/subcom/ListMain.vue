@@ -65,7 +65,7 @@
               }
           },
 
-          created(){
+          created(){      //钩子函数生命周期，打开页面就执行
               this.getGoodsGroup();
           }
       };
