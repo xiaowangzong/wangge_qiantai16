@@ -86,7 +86,7 @@
                                         <dd>
                                             <div class="stock-box">
                                                 <!-- 计数  element计数组件，可设置最小值 -->
-                                                <el-input-number size="mini" v-model="num"></el-input-number>
+                                                <el-input-number :min="0" size="mini" v-model="num"></el-input-number>
                                             </div>
                                             <span class="stock-txt">
                                                 库存
@@ -98,7 +98,7 @@
                                         <dd>
                                             <div class="btn-buy" id="buyButton">
                                                 <button class="buy">立即购买</button>
-                                                <button class="add">加入购物车</button>
+                                                <button class="add">@click="addCart"</button>
                                             </div>
                                         </dd>
                                     </dl>
@@ -159,7 +159,7 @@ export default {
   data() {
     return {
       id: this.$route.params.id,
-      num: 1, //预定义一个1，占位
+      num: 0, //预定义一个1，占位=>改为初始值为0
       top: {
         //先在top里面预定义一下他的子元素
         goodsinfo: {},
@@ -179,7 +179,13 @@ export default {
           this.top = res.data.message;
         }
       });
+    },
+    //加入购物车
+    addCart(){
+        this.$store.commit('modify', { id: this.id, num: this.num });
+                 this.num = 0;  // 加完之后重置计数框
     }
+    
   },
   //组件初始化完毕，数据可用时被调用
   created() {
@@ -217,6 +223,7 @@ export default {
 
     // 监听放大镜图片数据的变化, 变化后重新调用插件初始化方法
     top(){
+
          var magnifierConfig = {
                  magnifier : "#magnifier1",//最外层的大容器
                  width : 370,//承载容器宽
