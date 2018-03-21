@@ -3,7 +3,7 @@
         
         <!--推荐商品-->
                 <div class="left-220">
-                    <!-- 侧边栏      =>推荐商品=>共享--> 
+                    <!-- 右侧边栏      =>推荐商品=>共享--> 
                      <div class="bg-wrap nobg">
                        <div class="sidebar-box">    
 

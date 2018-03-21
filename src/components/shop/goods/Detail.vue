@@ -189,7 +189,35 @@ export default {
 
   // 视图挂载到页面上了, 这里可操作DOM
          mounted() {
-             var magnifierConfig = {
+            //  var magnifierConfig = {
+            //      magnifier : "#magnifier1",//最外层的大容器
+            //      width : 370,//承载容器宽
+            //      height : 370,//承载容器高
+            //      moveWidth : null,//如果设置了移动盒子的宽度，则不计算缩放比例
+            //      zoom : 5//缩放比例
+            //  };
+ 
+            //  // 调用这个插件的方法, 必须保证放大镜相关的DOM节点都已经正常构建并渲染, 
+            //  // 但是我们的节点里面有个v-for动态生成列表, 调用该方法时不能保证列表已经构建完毕, 所以延时一下
+            //  setTimeout(function() {
+            //      var _magnifier = $().imgzoon(magnifierConfig);
+            //  }, 500);
+             
+         },
+ 
+  // 商品详情页面的右侧列表, 可以点击切换不同的商品进行预览
+  // 但是默认情况下当前页面切换到当前页面不会触发组件的重新渲染, 为了解决这个问题,
+  // 我们可以监听$route对象的变化, 因为切换商品后, $route.params.id变化了, 我们监听它,
+  // 然后主动发起http请求, 调用接口获取新id的数据进行视图刷新
+  watch: {
+    $route() {
+      this.id = this.$route.params.id;
+      this.getTop(); //当发生改变的时候渲染
+    },
+
+    // 监听放大镜图片数据的变化, 变化后重新调用插件初始化方法
+    top(){
+         var magnifierConfig = {
                  magnifier : "#magnifier1",//最外层的大容器
                  width : 370,//承载容器宽
                  height : 370,//承载容器高
@@ -202,17 +230,6 @@ export default {
              setTimeout(function() {
                  var _magnifier = $().imgzoon(magnifierConfig);
              }, 500);
-             
-         },
- 
-  // 商品详情页面的右侧列表, 可以点击切换不同的商品进行预览
-  // 但是默认情况下当前页面切换到当前页面不会触发组件的重新渲染, 为了解决这个问题,
-  // 我们可以监听$route对象的变化, 因为切换商品后, $route.params.id变化了, 我们监听它,
-  // 然后主动发起http请求, 调用接口获取新id的数据进行视图刷新
-  watch: {
-    $route() {
-      this.id = this.$route.params.id;
-      this.getTop(); //当发生改变的时候渲染
     }
   }
 };
