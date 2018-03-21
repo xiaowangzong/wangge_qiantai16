@@ -3,8 +3,8 @@
         <!-- 公共评论 -->
         <!-- 需要一个根，不然报错 -->
         <div class="comment-box">
-            <!--取得评论总数-->
-            <form id="commentForm" name="commentForm" class="form-box" @submit.prevent="sendComments">
+            <!-- 取得评论总数，记得阻止默认的浏览器刷新提交-->
+            <form id="commentForm" name="commentForm" class="form-box" @submit.prevent="sendComments"> 
                 <div class="avatar-box">
                     <i class="iconfont icon-user-full"></i>
                 </div>
@@ -30,10 +30,10 @@
                     </div>
                     <div class="inner-box">
                         <div class="info">
-                            <span>{{item.user_name}}</span>
-                            <span>{{item.add_time}}</span>
+                            <span>{{ item.user_name }}</span>
+                            <span>{{ item.add_time }}</span>
                         </div>
-                        <p>{{item.content}}</p>
+                        <p>{{ item.content }}</p>
                     </div>
                 </li>
 
@@ -52,7 +52,9 @@ export default {
 
   data() {
     return {
+      //评论列表
       comments: [],
+      //提交评论所需数据
       commenttxt: {
         commenttxt: ""
       }
@@ -60,17 +62,16 @@ export default {
   },
 
   methods: {
-    //获取评论列表
-    getComments() {
-      let url = `${this.$api.commentList}goods/${
-        this.id
-      }?pageIndex=1&pageSize=10`;
-      this.$http.get(url).then(res => {
-        if (res.data.status == 0) {
-          this.comments = res.data.message;
-        }
-      });
-    },
+    // 获取评论列表
+             getComments() {
+                 // 这个接口比较特殊, 需要一个tablename用来指定评论模块, 还需要id用来指定某模块下某个商品的评论
+                 let url = `${this.$api.commentList}goods/${this.id}?pageIndex=1&pageSize=10`;
+                 this.$http.get(url).then(res => {
+                     if(res.data.status == 0) {
+                         this.comments = res.data.message;
+                     }
+                 })
+             },
 
     //发表评论--好像要重启一下api服务
     sendComments() {
@@ -81,7 +82,7 @@ export default {
           this.getComments();
           //如果成功，调用它，刷新页面
         }
-      });
+      })
     }
   },
 

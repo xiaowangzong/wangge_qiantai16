@@ -19,6 +19,8 @@
                 <div class="wrap-box">
                     <!--页面左边-->
                     <div class="left-925">
+
+                        <!-- 放大镜与商品购买 -->
                         <div class="goods-box clearfix">
                             <!-- 商品图片
                             <div class="pic-box"> -->
@@ -106,6 +108,7 @@
                             <!--/商品信息-->
                         </div>
 
+                        <!-- 商品详情与评论 -->
                         <div id="goodsTabs" class="goods-tab bg-wrap">
 
                             <el-tabs type="border-card">
@@ -144,6 +147,7 @@
 
 //导入公共右侧导航
 import AppAside from "./subcom/CommonAside.vue";
+// import Comment from "./subcom/CommonComment.vue";
 import Comment from "./subcom/CommonComment.vue";
 
 export default {
